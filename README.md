@@ -17,3 +17,4 @@ To do list:
  - Cleanup css on main navigation page, 
  - Add password security, 
  - Email authentication
+ - Currently being hosted on a Heroku server for ease of access. Will eventually transfer over to my personal server.
