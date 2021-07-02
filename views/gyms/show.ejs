@@ -1,0 +1,122 @@
+<% layout('layouts/boilerplate') %> 
+<link rel="stylesheet" href="/stylesheets/stars.css">
+
+
+<div class="row">
+    <div class="col-6">
+      
+
+<div id="gymCarousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <% gym.images.forEach((img, i) =>{ %> 
+    <div class="carousel-item <%= i === 0 ? 'active' : '' %>"> <!-- if i = 0, add class of active, if not add nothing-->
+      <img class="d-block w-100" src="<%= img.url %>" alt="">
+    </div>
+    <% }) %> 
+  </div>
+  <%  if(gym.images.length > 1){ %> 
+  
+  <a class="carousel-control-prev" href="#gymCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#gymCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  <% } %> 
+</div>
+
+        <div class="card mb-3">
+          
+        <div class="card-body">
+          <h5 class="card-title"><%= gym.title %></h5>
+          <p class="card-text"><%= gym.description %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-muted"><%= gym.location %></li>
+          <li class="list-group-item">Submitted by <%= gym.author.username %></li>
+          <li class="list-group-item">$<%= gym.price %>/hour</li>
+        </ul>
+
+        <!-- only be able to delete if the logged in user = the user who made the campground -->
+        <!-- without the curentUser && it would break and no work. -->
+        <% if( currentUser && gym.author.equals(currentUser._id)) {%> 
+        <div class="card-body">
+            <a href="/gyms/<%=gym._id%>/edit" class="card-link btn btn-primary">Edit</a>
+          <form  class="d-inline" action="/gyms/<%=gym._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+        <% } %> 
+        <div class="card-footer text-muted">
+            2 days ago
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-6">
+      <div id='map'></div>
+      <% if(currentUser){ %> 
+      <h2>Leave A Review</h2>
+      <form action="/gyms/<%=gym._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate> 
+        <!-- <div class="mb-3">
+          <label class="form-label" for="rating">Rating</label>
+          <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+        </div> -->
+        
+        <fieldset class="starability-basic">
+          <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+          <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+    
+        <div class="mb-3">
+          <label class="form-label" for="body">Review Text</label>
+          <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+          <div class="invalid-feedback">
+            Please add a review.
+          </div>
+        </div>
+        <button class="btn-success">Add Review</button>
+      </form>
+      <% } %> 
+      <% for(let review of gym.reviews) {%> 
+        <div class="card mb-3">
+        <div class=" card-body">
+          <h5 class="card-title"><%= review.author.username %> </h5>
+          <p class="starability-result" data-rating="<%=review.rating %>">
+            Rated: <%= review.rating %>   stars
+          </p>
+          <!-- <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username %> </h6> -->
+          <p class="card-text">Review: <%= review.body %></p>
+
+          <!-- If someone is signed in right now, and the review author is the same as the logged in users id, show delete button-->
+
+          <% if( currentUser && review.author.equals(currentUser._id)) {%> 
+          <form action="/gyms/<%=gym._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+          <button class="btn btn-sm btn-danger">Delete</button>
+          </form>
+          <% } %> 
+        </div>
+      </div>
+      <% } %> 
+    </div>
+</div>
+
+<script>
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+  const gym = <%- JSON.stringify(gym) %>
+
+</script>
+
+
+<script src="/javascripts/showPageMap.js"></script>

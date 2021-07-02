@@ -1,0 +1,65 @@
+<% layout('layouts/boilerplate') %> 
+<div class="row">
+    <h1 class="text-center">New Gyms</h1>
+    <div class="col-6 offset-3">
+
+        
+        <!-- offset-3, means middle when we have col-6 -->
+
+        <!-- Boostrap validation - required with js -->
+        <!-- https://getbootstrap.com/docs/5.0/forms/validation/ -->
+    
+        <form action="/gyms" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="gym[title]" placeholder="Title" required>
+                <div class="invalid-feedback">
+                    Please enter a title.
+                  </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="gym[location]" placeholder="Location" required>
+                <div class="invalid-feedback">
+                    Please enter a location.
+                  </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Choose image(s)...</label>
+                <input class="form-control" type="file" id="image" name="image" multiple>
+              </div>
+            <!-- <input type="file" name="image" multiple> -->
+            <!-- <div class="mb-3">
+                <label class="form-label" for="image">Image Url</label>
+                <input class="form-control" type="text" id="image" name="gym[image]" placeholder="Image Url" required>
+                <div class="invalid-feedback">
+                    Please link an image.
+                  </div>
+            </div> -->
+            <div class="mb-3">
+            
+                <label class="form-label" for="price">Gym Price</label>
+                <div class="input-group">
+                <span class="input-group-text" id="price-label">$</span>
+                <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price" aria-describedby="price-label" name="gym[price]" required>
+                <div class="invalid-feedback">
+                    Please list a price.
+                  </div>
+              </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="gym[description]" placeholder="Description" required></textarea>
+                <div class="invalid-feedback">
+                    Please add a description.
+                  </div>
+            </div>
+            <div class="mb-3">
+            <button class="btn btn-success">Add Gym</button>
+        </div>
+        </form>
+    <a href="/gyms">All Gyms</a>
+    
+    </div>
+</div>
+
