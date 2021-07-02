@@ -13,7 +13,7 @@ When downloading this git repository you will have access to a username and pass
 Login info: username: tim  || password: tim
 
 To do list:
-  Add Search Bar
-  Cleanup css on main navigation page
-  Add password security
+  Add Search Bar, 
+  Cleanup css on main navigation page, 
+  Add password security, 
   Email authentication
